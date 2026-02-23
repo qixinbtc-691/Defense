@@ -21,6 +21,8 @@ const TRANSLATIONS = {
     ammo: 'Ammo',
     status: 'Status',
     language: '中文',
+    rules: 'Rules',
+    close: 'Close',
   },
   zh: {
     title: 'Joanne新星防御',
@@ -35,6 +37,8 @@ const TRANSLATIONS = {
     ammo: '弹药',
     status: '状态',
     language: 'English',
+    rules: '游戏规则',
+    close: '关闭',
   }
 };
 
@@ -42,6 +46,7 @@ export default function App() {
   const [status, setStatus] = useState<GameStatus>('START');
   const [score, setScore] = useState(0);
   const [lang, setLang] = useState<Language>('zh');
+  const [showRules, setShowRules] = useState(false);
 
   const t = TRANSLATIONS[lang];
 
@@ -112,18 +117,51 @@ export default function App() {
                       </div>
                     </div>
                     <h2 className="text-3xl font-bold mb-4 tracking-tighter">{t.title}</h2>
-                    <div className="bg-black/40 p-4 rounded-lg mb-8 border border-zinc-800">
-                      <p className="text-emerald-400 font-medium whitespace-pre-line text-lg italic leading-relaxed">
-                        {t.instructions}
-                      </p>
+                    
+                    <div className="flex flex-col gap-4 mb-8">
+                      <button 
+                        onClick={() => setStatus('PLAYING')}
+                        className="group relative px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-full transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 w-full shadow-lg shadow-emerald-500/20"
+                      >
+                        <Play className="w-5 h-5 fill-current" />
+                        {t.start}
+                      </button>
+
+                      <button 
+                        onClick={() => setShowRules(true)}
+                        className="px-10 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-full transition-all flex items-center justify-center gap-2 border border-zinc-700"
+                      >
+                        <Info className="w-4 h-4" />
+                        {t.rules}
+                      </button>
                     </div>
-                    <button 
-                      onClick={() => setStatus('PLAYING')}
-                      className="group relative px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 mx-auto shadow-lg shadow-emerald-500/20"
-                    >
-                      <Play className="w-5 h-5 fill-current" />
-                      {t.start}
-                    </button>
+
+                    <AnimatePresence>
+                      {showRules && (
+                        <motion.div 
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+                        >
+                          <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl max-w-sm w-full shadow-2xl">
+                            <h3 className="text-xl font-bold mb-4 text-emerald-400 flex items-center gap-2">
+                              <Info className="w-5 h-5" />
+                              {t.rules}
+                            </h3>
+                            <div className="text-left text-zinc-300 text-sm space-y-2 mb-6 whitespace-pre-line leading-relaxed">
+                              {t.instructions}
+                            </div>
+                            <button 
+                              onClick={() => setShowRules(false)}
+                              className="w-full py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl font-bold transition-colors"
+                            >
+                              {t.close}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 )}
 

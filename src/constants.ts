@@ -10,11 +10,11 @@ export const INITIAL_AMMO = {
 export const SCORE_PER_ROCKET = 20;
 export const WIN_SCORE = 1000;
 
-export const EXPLOSION_RADIUS = 25;
+export const EXPLOSION_RADIUS = 25.5;
 export const EXPLOSION_DURATION = 60; // frames
 
-export const ROCKET_SPEED_MIN = 0.5;
-export const ROCKET_SPEED_MAX = 1.5;
+export const ROCKET_SPEED_MIN = 0.3;
+export const ROCKET_SPEED_MAX = 0.8;
 
 export const MISSILE_SPEED = 10;
 

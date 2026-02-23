@@ -256,55 +256,9 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onScoreChange, onStatusChange, 
   }, [status, spawnRocket, onScoreChange, onStatusChange]);
 
   const draw = useCallback((ctx: CanvasRenderingContext2D) => {
-    // Background
-    ctx.fillStyle = COLORS.BG;
+    // Background - Pure Black
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-    // Draw Shanghai Skyline (Three-Piece Set)
-    ctx.save();
-    ctx.fillStyle = '#1a1a1a';
-    
-    // Jin Mao Tower (Pagoda style)
-    const jmX = GAME_WIDTH * 0.3;
-    const jmY = GAME_HEIGHT - 20;
-    ctx.beginPath();
-    ctx.moveTo(jmX - 20, jmY);
-    ctx.lineTo(jmX - 15, jmY - 150);
-    ctx.lineTo(jmX - 10, jmY - 150);
-    ctx.lineTo(jmX - 5, jmY - 180);
-    ctx.lineTo(jmX + 5, jmY - 180);
-    ctx.lineTo(jmX + 10, jmY - 150);
-    ctx.lineTo(jmX + 15, jmY - 150);
-    ctx.lineTo(jmX + 20, jmY);
-    ctx.fill();
-
-    // Shanghai World Financial Center (Bottle Opener)
-    const swfcX = GAME_WIDTH * 0.5;
-    const swfcY = GAME_HEIGHT - 20;
-    ctx.beginPath();
-    ctx.moveTo(swfcX - 25, swfcY);
-    ctx.lineTo(swfcX - 15, swfcY - 220);
-    ctx.lineTo(swfcX + 15, swfcY - 220);
-    ctx.lineTo(swfcX + 25, swfcY);
-    ctx.fill();
-    // The "hole" at the top
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.rect(swfcX - 8, swfcY - 210, 16, 12);
-    ctx.fill();
-    ctx.globalCompositeOperation = 'source-over';
-
-    // Shanghai Tower (Spiral/Twisted)
-    const stX = GAME_WIDTH * 0.7;
-    const stY = GAME_HEIGHT - 20;
-    ctx.beginPath();
-    ctx.moveTo(stX - 30, stY);
-    ctx.bezierCurveTo(stX - 20, stY - 100, stX - 10, stY - 200, stX - 5, stY - 280);
-    ctx.lineTo(stX + 5, stY - 280);
-    ctx.bezierCurveTo(stX + 10, stY - 200, stX + 20, stY - 100, stX + 30, stY);
-    ctx.fill();
-
-    ctx.restore();
 
     // Draw Cities
     citiesRef.current.forEach(city => {
@@ -340,14 +294,14 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onScoreChange, onStatusChange, 
       ctx.translate(rocket.x, rocket.y);
       ctx.rotate(rocket.angle);
       
-      // Draw a small plane (doubled size again)
+      // Draw a small plane (original size)
       ctx.fillStyle = COLORS.ROCKET;
       // Body
-      ctx.fillRect(-20, -4, 40, 8);
+      ctx.fillRect(-10, -2, 20, 4);
       // Wings
-      ctx.fillRect(-4, -20, 8, 40);
+      ctx.fillRect(-2, -10, 4, 20);
       // Tail
-      ctx.fillRect(-20, -10, 4, 20);
+      ctx.fillRect(-10, -4, 2, 8);
       
       ctx.restore();
       
@@ -368,17 +322,30 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ onScoreChange, onStatusChange, 
       ctx.lineTo(missile.x, missile.y);
       ctx.stroke();
 
-      // Missile head (Doubled size again)
+      // Missile shape (Halved size)
       const angle = Math.atan2(missile.targetY - missile.startY, missile.targetX - missile.startX);
       ctx.save();
       ctx.translate(missile.x, missile.y);
       ctx.rotate(angle);
       
       ctx.fillStyle = COLORS.MISSILE;
+      // Body
+      ctx.fillRect(-10, -3, 15, 6);
+      // Nose
       ctx.beginPath();
-      ctx.moveTo(20, 0);
-      ctx.lineTo(-20, -12);
-      ctx.lineTo(-20, 12);
+      ctx.moveTo(5, -3);
+      ctx.lineTo(12, 0);
+      ctx.lineTo(5, 3);
+      ctx.closePath();
+      ctx.fill();
+      // Fins
+      ctx.beginPath();
+      ctx.moveTo(-10, -3);
+      ctx.lineTo(-13, -6);
+      ctx.lineTo(-7, -3);
+      ctx.moveTo(-10, 3);
+      ctx.lineTo(-13, 6);
+      ctx.lineTo(-7, 3);
       ctx.closePath();
       ctx.fill();
       
